@@ -1,11 +1,16 @@
 const express = require("express");
-const usersController = require("./controllers/usersController");
-const usersMiddleware = require("./middlewares/usersMiddleware");
+const jogadoresController = require("./controllers/jogadoresController");
 
 const router = express.Router();
 
-router.get('/', usersController.getAll);
+router.get('/jogadores/:nome', jogadoresController.obter);
 
-router.post('/',  usersMiddleware.validateBody, usersController.save);
+router.get('/jogadores', jogadoresController.obterTodos);
+
+router.get('/top10', jogadoresController.obterTop10);
+
+router.post('/jogadores', jogadoresController.salvar);
+
+router.put('/jogadores/:nome/marcarVitoria', jogadoresController.marcarVitoria);
 
 module.exports = router;
