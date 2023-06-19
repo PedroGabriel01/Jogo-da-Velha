@@ -1,7 +1,6 @@
 const jogadoresModel = require("../models/jogadoresModel");
 
 const salvar = async (req, res) => {
-    console.log("Teste2");
     await jogadoresModel.salvar(req.body);
     return res.status(200).send();
 }

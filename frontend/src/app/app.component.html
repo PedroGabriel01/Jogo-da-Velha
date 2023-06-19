@@ -1,22 +1,112 @@
 <div class="h-100 d-flex justify-content-center align-items-center">
-  <div class="col-md-6" style="background-color: white;">
-    <div class="row d-flex justify-content-around">
-      <div class="col-md-3">
-        <mat-form-field>
-          <mat-label>Player 1</mat-label>
-          <input matInput placeholder="Player 1" value="">
-        </mat-form-field>
+    <div *ngIf="!emJogo" class="container p-0 m-0">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-3">
+          <mat-form-field style="width: 100%;">
+            <mat-label>Player 1</mat-label>
+            <input matInput placeholder="Insira o nome" [(ngModel)]="player1">
+          </mat-form-field>
+        </div>
+  
+        <div class="col-md-3">
+          <mat-form-field style="width: 100%;">
+            <mat-label>Player 2</mat-label>
+            <input matInput placeholder="Insira o nome" [(ngModel)]="player2">
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-12  d-flex justify-content-center">
+          <button mat-raised-button color="accent" (click)="jogar()">Jogar</button>
+        </div>
       </div>
 
-      <div class="col-md-3">
-        <mat-form-field>
-          <mat-label>Player 2</mat-label>
-          <input matInput placeholder="Player 2" value="">
-        </mat-form-field>
+      <div class="row d-flex justify-content-center mt-5">
+        <div class="col-md-6">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Vitórias</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let jogador of listaJogadoresTop10;let indexOfelement=index;">
+                <th scope="row">{{indexOfelement+1}}</th>
+                <td>{{jogador.nome}}</td>
+                <td>{{jogador.vitorias}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="row">
-      
+
+    <div *ngIf="emJogo" class="container p-0 m-0">
+
+      <div class="row d-flex justify-content-center">
+        <table style="width: 450px;">
+          <tr>
+            <td class="quadrado">
+              <button class="width100" (click)="selecionarCelula('0,0')" mat-raised-button>{{tabuleiro.get("0,0") == player1 ? 'X' : tabuleiro.get("0,0") == player2 ? 'O' : ''}}</button>
+            </td>
+            <td class="quadrado">
+              <button class="width100" (click)="selecionarCelula('1,0')" mat-raised-button>{{tabuleiro.get("1,0") == player1 ? 'X' : tabuleiro.get("1,0") == player2 ? 'O' : ''}}</button>
+            </td>
+            <td class="quadrado">
+              <button class="width100" (click)="selecionarCelula('2,0')" mat-raised-button>{{tabuleiro.get("2,0") == player1 ? 'X' : tabuleiro.get("2,0") == player2 ? 'O' : ''}}</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="quadrado">
+              <button class="width100" (click)="selecionarCelula('0,1')" mat-raised-button>{{tabuleiro.get("0,1") == player1 ? 'X' : tabuleiro.get("0,1") == player2 ? 'O' : ''}}</button>
+            </td>
+            <td class="quadrado">
+              <button class="width100" (click)="selecionarCelula('1,1')" mat-raised-button>{{tabuleiro.get("1,1") == player1 ? 'X' : tabuleiro.get("1,1") == player2 ? 'O' : ''}}</button>
+            </td>
+            <td class="quadrado">
+              <button class="width100" (click)="selecionarCelula('2,1')" mat-raised-button>{{tabuleiro.get("2,1") == player1 ? 'X' : tabuleiro.get("2,1") == player2 ? 'O' : ''}}</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="quadrado">
+              <button class="width100" (click)="selecionarCelula('0,2')" mat-raised-button>{{tabuleiro.get("0,2") == player1 ? 'X' : tabuleiro.get("0,2") == player2 ? 'O' : ''}}</button>
+            </td>
+            <td class="quadrado">
+              <button class="width100" (click)="selecionarCelula('1,2')" mat-raised-button>{{tabuleiro.get("1,2") == player1 ? 'X' : tabuleiro.get("1,2") == player2 ? 'O' : ''}}</button>
+            </td>
+            <td class="quadrado">
+              <button class="width100" (click)="selecionarCelula('2,2')" mat-raised-button>{{tabuleiro.get("2,2") == player1 ? 'X' : tabuleiro.get("2,2") == player2 ? 'O' : ''}}</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="row d-flex justify-content-center mt-5">
+        <div class="col-md-12 d-flex justify-content-center">
+          <button mat-raised-button color="accent" (click)="finalizar()">Finalizar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div *ngIf="mostrandoModalJogadorVencedor" class="todaTela">
+  <div class="h-100 d-flex justify-content-center align-items-center">
+    <div class="col-md-4 p-3" style="background-color: white;border-radius: 5px;">
+      <div class="row text-center m-2">
+        <span style="font-size: 30px;">Jogador <b>{{playerVencedor}}</b> Venceu!</span>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-6  d-flex justify-content-center">
+          <button mat-raised-button color="accent" (click)="jogar()">Jogar Novamente</button>
+        </div>
+
+        <div class="col-md-6 d-flex justify-content-center">
+          <button mat-raised-button color="accent" (click)="finalizar()">Finalizar</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
